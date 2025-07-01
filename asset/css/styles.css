@@ -2485,8 +2485,8 @@ header .mobile-menu {
   right: 48px;
   padding: 4px;
   border-radius: 999px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 15%;
+  /* transform: translateY(-50%); */
   background-color: rgba(255, 255, 255, 0.1019607843);
   backdrop-filter: blur(24px);
   display: flex;
@@ -4514,4 +4514,41 @@ header .mobile-menu {
   }
 }
 
-/*# sourceMappingURL=styles.css.map */
+.fixed-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 999;
+        }
+
+        /* Individual button styles */
+        .circle-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #25d366; /* WhatsApp green color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        /* Hover effect */
+        .circle-button:hover {
+            transform: scale(1.1);
+            background-color: #128c7e;
+        }
+
+        /* Different colors for each button */
+        .call { background-color: #34b7f1; }
+        .call:hover { background-color: #0a66c2; }
+
+        .location { background-color: #ff5e57; }
+        .location:hover { background-color: #c0392b; }
