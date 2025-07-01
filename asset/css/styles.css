@@ -1809,6 +1809,9 @@ header .mobile-menu {
   background-color: #fff;
   color: #151515;
 }
+.social-links a:hover img{
+  filter: invert(100%);
+}
 .social-links.style-1 a {
   background-color: rgb(17, 17, 17);
 }
