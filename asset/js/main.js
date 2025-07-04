@@ -150,49 +150,68 @@
 
     // contact form
     var ajaxContactForm = function () {
-        $('#form-contact').each(function () {
-            $(this).validate({
-                submitHandler: function (form) {
-                    var $form = $(form),
-                        str = $form.serialize(),
-                        loading = $('<div />', { 'class': 'loading' });
+    $('#form-contact').each(function () {
+        $(this).validate({
+            submitHandler: function (form) {
+                var $form = $(form),
+                    str = $form.serialize(),
+                    loading = $('<div />', { 'class': 'loading' });
 
-                    $.ajax({
-                        type: "POST",
-                        url: $form.attr('action'),
-                        data: str,
-                        beforeSend: function () {
-                            $form.find('.send-wrap').append(loading);
-                        },
-                        success: function (msg) {
-                            var result, cls;
-                            if (msg === 'Success') {
-                                result = 'Message Sent Successfully To Email Administrator';
-                                cls = 'msg-success';
-                            } else {
-                                result = 'Error sending email.';
-                                cls = 'msg-error';
-                            }
+                $.ajax({
+                    type: "POST",
+                    url: $form.attr('action'),
+                    data: str,
+                    dataType: "json", // Expect JSON response
+                    beforeSend: function () {
+                        $form.find('.send-wrap').append(loading);
+                    },
+                    success: function (msg) {
+                        console.log('Response:', msg); // Debug: see actual response
+                        var result, cls;
 
-                            $form.prepend(
-                                $('<div />', {
-                                    'class': 'flat-alert ' + cls,
-                                    'text': result
-                                }).append(
-                                    $('<a class="close d-flex" href="#"><i class="icon icon-times-solid"></i></a>')
-                                )
-                            );
-
-                            $form.find(':input').not('.submit').val('');
-                        },
-                        complete: function (xhr, status, error_thrown) {
-                            $form.find('.loading').remove();
+                        // Google Scripts usually return { result: 'success' } or similar
+                        if (msg.result === 'success' || msg == 'Success') {
+                            result = 'Message Sent Successfully To Email Administrator';
+                            cls = 'msg-success';
+                        } else {
+                            result = 'Error sending email.';
+                            cls = 'msg-error';
                         }
-                    });
-                }
-            });
+
+                        $form.prepend(
+                            $('<div />', {
+                                'class': 'flat-alert ' + cls,
+                                'text': result
+                            }).append(
+                                $('<a class="close d-flex" href="#"><i class="icon icon-times-solid"></i></a>')
+                            )
+                        );
+
+                        $form.find(':input').not('.submit').val('');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Submission error:', error);
+                        var result = 'Error sending email.';
+                        var cls = 'msg-error';
+
+                        $form.prepend(
+                            $('<div />', {
+                                'class': 'flat-alert ' + cls,
+                                'text': result
+                            }).append(
+                                $('<a class="close d-flex" href="#"><i class="icon icon-times-solid"></i></a>')
+                            )
+                        );
+                    },
+                    complete: function () {
+                        $form.find('.loading').remove();
+                    }
+                });
+            }
         });
-    };
+    });
+};
+
 
     // subscribe mailchimp
     var ajaxSubscribe = {
